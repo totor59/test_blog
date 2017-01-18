@@ -5,4 +5,4 @@
   <script src="<?=base_url() . 'assets/js/ckeditor/ckeditor.js';?>"></script>
 </head>
 <body>
-  <h1><?=$post->title ?></h1>
+  <h1><?= $title; ?></h1>

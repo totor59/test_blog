@@ -12,10 +12,11 @@ class Blog extends CI_Controller
   function index()
   {
     // PAGINATION
-    $start = $this->uri->segment(2);
+    $start = $this->uri->segment(3);
     $limit = 3;
     $config = array();
-    $config["base_url"] = base_url(). "blog/";
+    $config["base_url"] = base_url(). "blog/page/";
+    $config['first_url'] = base_url(). "blog/";
     $config["total_rows"] = $this->db->get('article')->num_rows();
     $config["per_page"] = $limit;
     $config['use_page_numbers'] = FALSE;
@@ -28,7 +29,7 @@ class Blog extends CI_Controller
 
   public function view($slug) {
     $data['post'] = $this->blog_model->get_post($slug);
-    $this->load->view('templates/header', $data);
+    $this->load->view('templates/header-view', $data);
     $this->load->view('blog/view', $data);
     $this->load->view('templates/footer');
   }
