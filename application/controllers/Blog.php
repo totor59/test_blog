@@ -25,4 +25,12 @@ class Blog extends CI_Controller
     $data['query'] = $this->blog_model->get_all_posts($limit, $start);
     $this->load->view('blog/index',$data);
   }
+
+  public function view($slug) {
+    $data['post'] = $this->blog_model->get_post($slug);
+    $this->load->view('templates/header', $data);
+    $this->load->view('blog/view', $data);
+    $this->load->view('templates/footer');
+  }
+
 }
