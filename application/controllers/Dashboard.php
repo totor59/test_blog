@@ -21,7 +21,10 @@ class Dashboard extends CI_Controller {
       $data["links"] = $this->pagination->create_links();
       // PAGINATION END
       $data['query'] = $this->blog_model->get_all_posts($limit, $start);
+      $data['title'] = 'Dashboard';
+      $this->load->view('templates/header', $data);
       $this->load->view('admin/dashboard',$data);
+      $this->load->view('templates/footer');
     }
     else {
       //If no session, redirect to login page
@@ -34,10 +37,15 @@ class Dashboard extends CI_Controller {
         redirect('login', 'refresh');
       }
       $data['post'] = $this->blog_model->get_post($slug);
+      if(!isset($data['post'])) {
+        $this->load->view('messages/404');
+      } else {
       $this->load->view('templates/header-view', $data);
       $this->load->view('admin/view', $data);
+      var_dump($data);
       $this->load->view('templates/footer');
   }
+}
   public function logout() {
     //$this->session->unset_userdata('logged_in');
     session_destroy();
@@ -57,7 +65,6 @@ class Dashboard extends CI_Controller {
     $this->form_validation->set_rules('content', 'Text', 'required');
     if ($this->form_validation->run() === FALSE) {
       $this->load->view('templates/header', $data);
-      var_dump($data);
       $this->load->view('admin/create');
       $this->load->view('templates/footer');
     }
