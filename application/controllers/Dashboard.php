@@ -13,7 +13,8 @@ class Dashboard extends CI_Controller {
       $start = $this->uri->segment(3);
       $limit = 3;
       $config = array();
-      $config["base_url"] = base_url(). "blog/page/";
+      $config["base_url"] = base_url(). "dashboard/page/";
+      $config['first_url'] = base_url(). "dashboard/";
       $config["total_rows"] = $this->db->get('article')->num_rows();
       $config["per_page"] = $limit;
       $config['use_page_numbers'] = FALSE;
@@ -34,30 +35,29 @@ class Dashboard extends CI_Controller {
 
   public function view($slug) {
     if(!$this->session->userdata('logged_in')) {
-        redirect('login', 'refresh');
-      }
-      $data['post'] = $this->blog_model->get_post($slug);
-      if(!isset($data['post'])) {
-        $this->load->view('messages/404');
-      } else {
+      redirect('login', 'refresh');
+    }
+    $data['post'] = $this->blog_model->get_post($slug);
+    if(!isset($data['post'])) {
+      show_404();
+    } else {
       $this->load->view('templates/header-view', $data);
       $this->load->view('admin/view', $data);
-      var_dump($data);
       $this->load->view('templates/footer');
+    }
   }
-}
   public function logout() {
     //$this->session->unset_userdata('logged_in');
     session_destroy();
     redirect(base_url().'blog/');
   }
 
-// CRUD FUNCTIONS
+  // CRUD FUNCTIONS
 
   public function create() {
     if(!$this->session->userdata('logged_in') === TRUE ) {
-        redirect('login', 'refresh');
-      }
+      redirect('login', 'refresh');
+    }
     $this->output->enable_profiler(true);
     $data['title'] = 'Create a blog item';
     $slug = url_title($this->input->post('title'), 'dash', TRUE);
@@ -76,8 +76,8 @@ class Dashboard extends CI_Controller {
 
   public function delete($slug) {
     if(!$this->session->userdata('logged_in') === TRUE ) {
-        redirect('login', 'refresh');
-      }
+      redirect('login', 'refresh');
+    }
     $this->output->enable_profiler(true);
     $this->blog_model->delete_article($slug);
     $this->load->view('messages/delete_success');
@@ -85,8 +85,8 @@ class Dashboard extends CI_Controller {
 
   public function update($slug) {
     if(!$this->session->userdata('logged_in') === TRUE ) {
-        redirect('login', 'refresh');
-      }
+      redirect('login', 'refresh');
+    }
     $this->output->enable_profiler(true);
     $data['post'] = $this->blog_model->get_post($slug);
     $data['title'] = 'Update a blog item';

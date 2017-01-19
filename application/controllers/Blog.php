@@ -16,7 +16,7 @@ class Blog extends CI_Controller
     $limit = 3;
     $config = array();
     $config["base_url"] = base_url(). "blog/page/";
-    $config['first_url'] = base_url(). "blog/";
+    $config['first_url'] = base_url();
     $config["total_rows"] = $this->db->get('article')->num_rows();
     $config["per_page"] = $limit;
     $config['use_page_numbers'] = FALSE;
@@ -33,7 +33,7 @@ class Blog extends CI_Controller
   public function view($slug) {
     $data['post'] = $this->blog_model->get_post($slug);
     if(!isset($data['post'])) {
-      $this->load->view('messages/404');
+      show_404();
     } else {
     $this->load->view('templates/header-view', $data);
     $this->load->view('blog/view', $data);
